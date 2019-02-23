@@ -1,0 +1,12 @@
+d=read.csv(file.choose(),header = TRUE); attach(d); names(d); d2=d[,c(1,2,8,9,10)] names(d2)=c("name","gender","rub","positiveyes","positiveno"); attach(d2); names(d2)
+sample1=subset(d2,rub=="Yes"); dim(sample1);sample2=subset(d2,rub=="No"); dim(sample2); sample2; sample1
+#Sample1
+n1=nrow(sample1); df1=n1-1; m1=mean(sample1$positiveyes); m1; sd1=sd(sample1$positiveyes); sd1;
+#Sample2
+n2=nrow(sample2); df2=n2-1; m2=mean(sample2$positiveno); m2; sd2=sd(sample2$positiveno); sd2 t=(m1-m2)/sqrt(((sd1*sd1)/n1)+((sd2*sd2)/n2)); t;df=n1+n2-2 ; df;pt(abs(t),df,lower.tail = FALSE)*2
+#Thus it is significant. when null rejected. Calculate effect size
+sp=sqrt(sum(df1*(sd1^2),df2*(sd2^2))/sum(df1,df2)); sp; cd=(m1-m2)/sp ; cd
+#Power for 2-sample t-test
+install.packages('pwr'); library(pwr); N = nrow(df); d = cd; summary(positiveyes); summary(positiveno) pwr.t.test(n=N, d=d, sig.level = 0.05, type = "two.sample", alternative = "two.sided")
+#Summary
+summary(positiveyes, na.rm =TRUE); sd(positiveyes, na.rm =TRUE); barplot(table(positiveyes), main = "Rubbed Testudo's nose", xlab = "Number of positive occurences", ylab = "Frequency", las= 1, seq(1:7), col=heat.colors(7)) summary(positiveno, na.rm =TRUE); sd(positiveno, na.rm =TRUE);barplot(table(positiveno), main = "Did not rub Testudo's nose", xlab = "Number of positive occurences", ylab = "Frequency", las=1,seq(1:7), col=heat.colors(7)) barplot(table(d$Would.you.consider.yourself), main = "Statistics on what you consider yourself as!", xlab = "Consid er Yourself As", ylab = "Frequency", las= 1, seq(1:7), col=heat.colors(7),names.arg = c("Pessimist","Realist","Opti mist","Idealist"));barplot(table(d$How.old.are.you.), main = "Statistics on Age", xlab = "Age", ylab = "Frequency", l as= 1, seq(1:7), col=heat.colors(7))
